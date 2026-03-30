@@ -37,10 +37,7 @@ exec --no-startup-id nm-applet
 exec --no-startup-id setxkbmap no
 exec --no-startup-id picom
 exec --no-startup-id feh --bg-fill ~/Downloads/pure-black-oled-pnh30c25986brd8t.webp
-<<<<<<< HEAD
-=======
 exec --no-startup-id sudo systemctl start keyd
->>>>>>> 5f75640 (restore local dotfiles)
 
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
@@ -100,18 +97,12 @@ bindsym $mod+shift+space focus mode_toggle
 
 # change focus between tiling / floating windows
 bindsym $mod+space floating toggle
-<<<<<<< HEAD
 
 # focus the parent container
 bindsym $mod+a focus parent
-=======
-<<<<<<< HEAD
 
 # focus the parent container
 bindsym $mod+a focus parent
-=======
->>>>>>> d8e2ad8 (hello)
->>>>>>> 5f75640 (restore local dotfiles)
 
 # focus the child container
 #bindsym $mod+d focus child

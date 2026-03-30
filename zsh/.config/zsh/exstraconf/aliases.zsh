@@ -27,16 +27,7 @@ findpkgs() {
 }
 
 #nvim
-<<<<<<< HEAD
-unalias nv 2>/dev/null
 
-=======
-<<<<<<< HEAD
-unalias nv 2>/dev/null
-
-=======
->>>>>>> d8e2ad8 (hello)
->>>>>>> 5f75640 (restore local dotfiles)
 sunv() {
   if [[ -n "$NVIM" ]]; then
     if [[ $# -eq 0 ]]; then
