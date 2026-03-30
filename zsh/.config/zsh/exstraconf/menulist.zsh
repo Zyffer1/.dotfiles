@@ -8,6 +8,7 @@ zstyle ':completion:*' menu select
 zstyle ':completion:*' completer _extensions _complete _approximate
 zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z}'
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+setopt GLOB_DOTS
 
 # keybind for completion menu
 bindkey -M menuselect 'h' backward-char

@@ -3,19 +3,13 @@ return {
     "nvim-telescope/telescope.nvim",
     dependencies = {
       "nvim-lua/plenary.nvim",
-      "nvim-telescope/telescope-ui-select.nvim",
-      {
-        "nvim-telescope/telescope-fzf-native.nvim",
-        build = "make",
-      },
     },
 
     keys = {
-      { "<leader>ff", function() require("telescope.builtin").find_files() end },
-      { "<leader>fg", function() require("telescope.builtin").live_grep() end },
-      { "<leader>fb", function() require("telescope.builtin").buffers() end },
-      { "<leader>fh", function() require("telescope.builtin").help_tags() end },
-      { "<leader>b",  function() require("telescope.builtin").builtin() end },
+      { "<leader>ff", function() require("telescope.builtin").find_files() end, desc = "Find files" },
+      { "<leader>fg", function() require("telescope.builtin").live_grep() end,  desc = "Grep" },
+      { "<leader>fb", function() require("telescope.builtin").buffers() end,    desc = "Buffers" },
+      { "<leader>fh", function() require("telescope.builtin").help_tags() end,  desc = "Help" },
     },
 
     config = function()
@@ -23,23 +17,19 @@ return {
       local themes = require("telescope.themes")
 
       telescope.setup({
+        defaults = themes.get_ivy({}), -- ivy layout everywhere
+
         pickers = {
-          find_files = themes.get_ivy({
-          })
-        },
-        extensions = {
-          ["ui-select"] = themes.get_dropdown({}),
-          fzf = {
-            fuzzy = true,
-            override_generic_sorter = true,
-            override_file_sorter = true,
-            case_mode = "smart_case",
+          find_files = {
+            hidden = true, -- show dotfiles
+          },
+          live_grep = {
+            additional_args = function()
+              return { "--hidden" }
+            end,
           },
         },
       })
-
-      pcall(telescope.load_extension, "ui-select")
-      pcall(telescope.load_extension, "fzf")
     end,
   },
 }

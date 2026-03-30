@@ -72,7 +72,7 @@ return {
         }),
 
         enabled = function()
-          return true
+          return vim.bo.filetype ~= "TelescopePrompt"
         end,
       })
     end,
