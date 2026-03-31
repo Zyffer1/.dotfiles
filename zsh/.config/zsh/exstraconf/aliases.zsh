@@ -3,32 +3,12 @@ alias c='clear'
 alias e='exit'
 alias hello='yes hello'
 
-# better gnu
+# better shell utile
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
-
-#gentoo
-alias emerge='sudo emerge -q --ask'
-
-unalias usef 2>/dev/null
-confpkgm() {
-    if [ -z "$1" ]; then
-        sudo nvim /etc/portage/
-    else
-        sudo nvim /etc/portage/"$1"
-    fi
-}
-
-findpkgs() {
-    if [ -z "$1" ]; then
-        echo "Usage: findpkgs <package>"
-        return 1
-    fi
-    /usr/bin/emerge -s "$1" | less
-}
+alias fzf='fzf -m --preview="bat --color=always {}"'
 
 #nvim
-
 sunv() {
   if [[ -n "$NVIM" ]]; then
     if [[ $# -eq 0 ]]; then
@@ -60,3 +40,5 @@ nano() {
     fi
   fi
 }
+
+alias nfzf='nvim $(fzf -m --preview="bat --color=always {}")'
