@@ -1,6 +1,7 @@
 # shortening
 alias c='clear'
 alias e='exit'
+alias hello='yes hello'
 
 # better gnu
 alias ls='ls --color=auto'
