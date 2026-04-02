@@ -34,9 +34,8 @@ exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 # and nm-applet is a desktop environment-independent system tray GUI for it.
 exec --no-startup-id nm-applet
 
-exec --no-startup-id setxkbmap no
 exec --no-startup-id picom
-exec --no-startup-id feh --bg-fill ~/Downloads/pure-black-oled-pnh30c25986brd8t.webp
+exec --no-startup-id feh --bg-max ~/Downloads/378.jpg
 exec --no-startup-id sudo systemctl start keyd
 
 # Use pactl to adjust volume in PulseAudio.
