@@ -1,4 +1,3 @@
-sudo systemctl start keyd
 autoload -Uz colors
 colors
 setopt PROMPT_SUBST
