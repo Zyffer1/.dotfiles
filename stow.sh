@@ -2,7 +2,7 @@
 
 cd "$HOME/.dotfiles" || exit 1
 
-stow i3 zsh nvim tmux scripts alacritty wezterm yazi
+stow -t ~ i3 zsh nvim tmux scripts alacritty wezterm yazi
 
 target="/etc/keyd/default.conf"
 source="$HOME/.dotfiles/default.conf"
