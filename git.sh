@@ -7,4 +7,4 @@ git push -u origin main
 mkdir -p "$HOME/bk"
 cp -r "$PWD" "$HOME/bk"
 
-cp -rf /home/idk/.dotfiles /root/
+sudo cp -rf /home/idk/.dotfiles /root/
