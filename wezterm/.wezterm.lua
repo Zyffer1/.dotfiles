@@ -13,24 +13,31 @@ config.window_padding = {
   bottom = 0,
 }
 
-config.window_background_opacity = 0.7
 
-config.keys = {
-  {
-    key = "O",
-    mods = "CTRL|SHIFT",
-    action = wezterm.action_callback(function(window, _)
-      local overrides = window:get_config_overrides() or {}
+local desktop = os.getenv("XDG_CURRENT_DESKTOP") or ""
 
-      if overrides.window_background_opacity == 1.0 then
-        overrides.window_background_opacity = 0.7
-      else
-        overrides.window_background_opacity = 1.0
-      end
+if desktop:lower():find("gnome") then
+  config.color_scheme = "Catppuccin Mocha"
+  config.window_background_opacity = 1.0
+else
+  config.window_background_opacity = 0.0
+  config.keys = {
+    {
+      key = "O",
+      mods = "CTRL|SHIFT",
+      action = wezterm.action_callback(function(window, _)
+        local overrides = window:get_config_overrides() or {}
 
-      window:set_config_overrides(overrides)
-    end),
-  },
-}
+        if overrides.window_background_opacity == 1.0 then
+          overrides.window_background_opacity = 0.0
+        else
+          overrides.window_background_opacity = 1.0
+        end
+
+        window:set_config_overrides(overrides)
+      end),
+    },
+  }
+end
 
 return config
