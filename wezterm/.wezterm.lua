@@ -14,7 +14,6 @@ config.window_padding = {
 }
 config.colors = {
   cursor_bg = "#B5B5B5"
-  
 }
 
 
@@ -24,6 +23,7 @@ if desktop:lower():find("gnome") then
   config.color_scheme = "Catppuccin Mocha"
   config.window_background_opacity = 1.0
 else
+  config.color_scheme = "Catppuccin Mocha"
   config.window_background_opacity = 0.0
   config.keys = {
     {
