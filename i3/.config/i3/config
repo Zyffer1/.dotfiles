@@ -29,7 +29,7 @@ bindsym $mod+Shift+q kill
 #opening stuff
 bindsym $mod+Return exec wezterm
 bindsym $mod+d exec --no-startup-id rofi -show run
-bindsym $mod+Shift+l exec --no-startup-id i3lock -c 000000 -i ~/Downloads/gyArcn-1393300073.png
+bindsym $mod+Shift+l exec --no-startup-id i3lock -c 000000 -i ~/Downloads/378.jpg
 
 #focus
 bindsym $mod+h focus left
