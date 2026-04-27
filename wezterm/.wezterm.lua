@@ -12,19 +12,15 @@ config.window_padding = {
   top = 0,
   bottom = 0,
 }
-config.colors = {
-  cursor_bg = "#B5B5B5"
-}
 
 
 local desktop = os.getenv("XDG_CURRENT_DESKTOP") or ""
 
 if desktop:lower():find("gnome") then
   config.color_scheme = "Catppuccin Mocha"
-  config.window_background_opacity = 1.0
 else
-  config.color_scheme = "Catppuccin Mocha"
   config.window_background_opacity = 0.0
+  config.color_scheme = "Catppuccin Mocha"
   config.keys = {
     {
       key = "O",
