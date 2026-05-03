@@ -18,6 +18,8 @@ local desktop = os.getenv("XDG_CURRENT_DESKTOP") or ""
 
 if desktop:lower():find("gnome") then
   config.color_scheme = "Catppuccin Mocha"
+elseif desktop:lower():find("kde") then
+  config.color_scheme = "Catppuccin Mocha"
 else
   config.window_background_opacity = 0.0
   config.color_scheme = "Catppuccin Mocha"
