@@ -1,3 +1,7 @@
+set termguicolors
+set background=dark
+colorscheme catppuccin_mocha
+
 augroup vim_cursor_block
   autocmd!
   autocmd VimEnter * silent !printf '\033[2 q'

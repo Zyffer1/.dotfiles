@@ -2,7 +2,7 @@
 
 cd "$HOME/.dotfiles" || exit 1
 
-stow -t ~ i3 zsh nvim tmux scripts alacritty wezterm yazi kitty vim spicetify
+stow -t ~ i3 zsh nvim tmux scripts alacritty wezterm yazi kitty vim spicetify hyprland neofetch sxhkd
 
 target="/etc/keyd/default.conf"
 source="$HOME/.dotfiles/default.conf"
