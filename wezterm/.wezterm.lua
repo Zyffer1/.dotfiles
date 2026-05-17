@@ -1,4 +1,4 @@
-local wezterm = require 'wezterm'
+local wezterm = require "wezterm"
 local config = wezterm.config_builder()
 
 config.initial_cols = 120
@@ -6,6 +6,7 @@ config.initial_rows = 28
 config.font_size = 22
 
 config.enable_tab_bar = false
+
 config.window_padding = {
   left = 0,
   right = 0,
@@ -13,6 +14,16 @@ config.window_padding = {
   bottom = 0,
 }
 
+config.keys = {
+  {
+    key = "R",
+    mods = "CTRL|SHIFT",
+    action = wezterm.action.ResetFontSize,
+  },
+}
+
+config.enable_wayland = false
+config.max_fps = 165
 
 local desktop = os.getenv("XDG_CURRENT_DESKTOP") or ""
 
@@ -23,23 +34,22 @@ elseif desktop:lower():find("kde") then
 else
   config.window_background_opacity = 0.0
   config.color_scheme = "Catppuccin Mocha"
-  config.keys = {
-    {
-      key = "O",
-      mods = "CTRL|SHIFT",
-      action = wezterm.action_callback(function(window, _)
-        local overrides = window:get_config_overrides() or {}
 
-        if overrides.window_background_opacity == 1.0 then
-          overrides.window_background_opacity = 0.0
-        else
-          overrides.window_background_opacity = 1.0
-        end
+  table.insert(config.keys, {
+    key = "O",
+    mods = "CTRL|SHIFT",
+    action = wezterm.action_callback(function(window, _)
+      local overrides = window:get_config_overrides() or {}
 
-        window:set_config_overrides(overrides)
-      end),
-    },
-  }
+      if overrides.window_background_opacity == 1.0 then
+        overrides.window_background_opacity = 0.0
+      else
+        overrides.window_background_opacity = 1.0
+      end
+
+      window:set_config_overrides(overrides)
+    end),
+  })
 end
 
 return config

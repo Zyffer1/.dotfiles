@@ -5,3 +5,4 @@ done
 
 neofetch
 printf "\n"
+printf "\n"

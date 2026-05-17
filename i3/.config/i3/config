@@ -10,7 +10,7 @@ exec --no-startup-id dex --autostart --environment i3
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 exec --no-startup-id nm-applet
 exec --no-startup-id picom
-exec --no-startup-id feh --bg-max ~/Downloads/378.jpg
+exec --no-startup-id feh --bg-fill ~/Pictures/dark-forest.jpg ~/Pictures/ruins.jpg
 
 #audo/laptop
 set $refresh_i3status killall -SIGUSR1 i3status
@@ -29,7 +29,7 @@ bindsym $mod+Shift+q kill
 #opening stuff
 bindsym $mod+Return exec wezterm
 bindsym $mod+d exec --no-startup-id rofi -show run
-bindsym $mod+Shift+l exec --no-startup-id i3lock -c 000000 -i ~/Downloads/378.jpg
+bindsym $mod+Shift+l exec --no-startup-id i3lock -c 000000
 
 #focus
 bindsym $mod+h focus left
@@ -42,18 +42,18 @@ bindsym $mod+f fullscreen toggle
 bindsym $mod+space floating toggle
 
 #workspace declaration
-workspace 1 output DP-3
-workspace 2 output DP-3
-workspace 3 output DP-3
-workspace 4 output DP-3
-workspace 5 output DP-3
-workspace 6 output DP-3
-workspace 7 output DP-3
-workspace 8 output DP-3
-workspace 9 output DP-3
-workspace 10 output HDMI-1-1
+workspace 1 output DisplayPort-2
+workspace 2 output DisplayPort-2
+workspace 3 output DisplayPort-2
+workspace 4 output DisplayPort-2
+workspace 5 output DisplayPort-2
+workspace 6 output DisplayPort-2
+workspace 7 output DisplayPort-2
+workspace 8 output DisplayPort-2
+workspace 9 output DisplayPort-2
+workspace 10 output HDMI-A-0
 
-#workspaces
+#move yourself thru workspaces 
 bindsym $mod+1 workspace 1
 bindsym $mod+2 workspace 2
 bindsym $mod+3 workspace 3
@@ -66,9 +66,24 @@ bindsym $mod+9 workspace 9
 bindsym $mod+0 workspace 10
 bindsym $mod+Ctrl+Shift+mod1+1 workspace 11
 
+#move windows between workspaces
+# move focused window between workspaces
+bindsym Mod4+Shift+1 move container to workspace number 1
+bindsym Mod4+Shift+2 move container to workspace number 2
+bindsym Mod4+Shift+3 move container to workspace number 3
+bindsym Mod4+Shift+4 move container to workspace number 4
+bindsym Mod4+Shift+5 move container to workspace number 5
+bindsym Mod4+Shift+6 move container to workspace number 6
+bindsym Mod4+Shift+7 move container to workspace number 7
+bindsym Mod4+Shift+8 move container to workspace number 8
+bindsym Mod4+Shift+9 move container to workspace number 9
+bindsym Mod4+Shift+0 move container to workspace number 10
+
 #reload
 bindsym $mod+Shift+r restart
 bindsym $mod+Ctrl+Shift+r exec source ~/.zshrc
+
+bindsym $mod+m exec i3-msg exit
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
@@ -82,6 +97,28 @@ mode "resize" {
   bindsym $mod+r mode "default"
 }
 bindsym $mod+r mode "resize"
+
+# Catppuccin Mocha i3bar
+bar {
+    position bottom
+    status_command i3status --config ~/.config/i3status/config
+    tray_output primary
+    font pango:JetBrainsMono Nerd Font 10
+
+    colors {
+        # Catppuccin Mocha
+        background #1e1e2e
+        statusline #cdd6f4
+        separator  #45475a
+
+        #                  border  background text
+        focused_workspace  #89b4fa #89b4fa #1e1e2e
+        active_workspace   #313244 #313244 #cdd6f4
+        inactive_workspace #181825 #181825 #a6adc8
+        urgent_workspace   #f38ba8 #f38ba8 #1e1e2e
+        binding_mode       #f9e2af #f9e2af #1e1e2e
+    }
+}
 
 #idk
 client.focused          #000000 #000000 #000000 #000000 #000000

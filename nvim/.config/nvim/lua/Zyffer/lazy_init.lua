@@ -15,5 +15,8 @@ vim.opt.rtp:prepend(lazypath)
 
 -- load plugins from lua/plugins/
 require("lazy").setup({
-  { import = "Zyffer.plugins" },
+  spec = {
+    { import = "Zyffer.plugins" }
+  },
+  change_detection = { notify = false}
 })

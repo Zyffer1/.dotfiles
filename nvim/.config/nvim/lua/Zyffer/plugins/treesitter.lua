@@ -14,6 +14,7 @@ return {
           "lua",
           "bash",
           "rust",
+          "go",
         },
         highlight = {
           enable = true,

@@ -1,18 +1,22 @@
 # shortening
 alias sozsh='source ~/.zshrc'
 alias make.conf='sudo nvim /etc/makepkg.conf'
- 
+
+# rename
+alias sudo='doas'
 
 # better shell utile
 alias ls='ls -la --color=auto'
 alias grep='grep --color=auto'
 alias fzf='fzf -m --preview="bat --color=always {}"'
-alias clear='clear && neofetch'
+alias clear='clear && neofetch; printf "\n"; printf "\n"'
+
 
 #nvim
 alias suvi='sudo nvim'
 alias vi='nvim'
 alias nfzf='nvim $(fzf -m --preview="bat --color=always {}")'
+
 
 #yazi
 function y() {

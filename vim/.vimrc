@@ -1,3 +1,3 @@
-source ~/.dotfiles/vim/.vim.Zyffer/set.vim
-source ~/.dotfiles/vim/.vim.Zyffer/plugins.vim
-source ~/.dotfiles/vim/.vim.Zyffer/keybinds.vim
+source ~/.vim.Zyffer/set.vim
+"source ~/.vim.Zyffer/plugins.vim
+source ~/.vim.Zyffer/keybinds.vim

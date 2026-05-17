@@ -1,14 +1,13 @@
-set termguicolors
-set background=dark
-colorscheme catppuccin_mocha
-
-augroup vim_cursor_block
-  autocmd!
-  autocmd VimEnter * silent !printf '\033[2 q'
-  autocmd InsertEnter * silent !printf '\033[2 q'
-  autocmd InsertLeave * silent !printf '\033[2 q'
-  autocmd VimLeave * silent !printf '\033[2 q'
-augroup END
+"set termguicolors
+"set background=dark
+"
+"augroup vim_cursor_block
+"  autocmd!
+"  autocmd VimEnter * silent !printf '\033[2 q'
+"  autocmd InsertEnter * silent !printf '\033[2 q'
+"  autocmd InsertLeave * silent !printf '\033[2 q'
+"  autocmd VimLeave * silent !printf '\033[2 q'
+"augroup END
 
 set number
 set relativenumber

@@ -75,7 +75,7 @@ cat > /dev/null <<DESCRIPTION
                     exe file, copy it, supply it to the script.
 
                     Or you can run : find ~/.local/share/Steam/steamapps/common -iregex ".*Back to the future.*.exe$"
-                    We see BackToTheFuture101.exe is in "/home/kevin/.local/share/Steam/steamapps/common/Back to the Future Ep 1/"
+                    We see BackToTheFuture101.exe is in "$HOME/.local/share/Steam/steamapps/common/Back to the Future Ep 1/"
 
                 Run this script: ./reshade-linux.sh
 
@@ -85,7 +85,7 @@ cat > /dev/null <<DESCRIPTION
                     If you have never run this script, the shaders and ReShade will be downloaded.
 
                 Supply the game directory where exe file is, when asked:
-                    /home/kevin/.local/share/Steam/steamapps/common/Back to the Future Ep 1
+                    $HOME/.local/share/Steam/steamapps/common/Back to the Future Ep 1
 
                 Select if you want it to automatically detect the correct dll file for ReShade or
                   to manually specity it.
@@ -113,11 +113,11 @@ cat > /dev/null <<DESCRIPTION
                 Supply the WINEPREFIX:
                 To find the WINEPREFIX for Doom on Steam, do a search on https://steamdb.info for Doom : https://steamdb.info/app/379720/
                 We see the App ID listed there as 379720, we can now search for the folder: find ~/.local/share/Steam -wholename *compatdata/379720
-                    /home/kevin/.local/share/Steam/steamapps/compatdata/379720
+                    $HOME/.local/share/Steam/steamapps/compatdata/379720
 
                 Supply the exe architecture (32 or 64 bits):
                 To find the exe architecture for the game, we can run: file ~/.local/share/Steam/steamapps/common/DOOM/DOOMx64vk.exe
-                    /home/kevin/.local/share/Steam/steamapps/common/DOOM/DOOMx64vk.exe: PE32+ executable (GUI) x86-64, for MS Windows
+                    $HOME/.local/share/Steam/steamapps/common/DOOM/DOOMx64vk.exe: PE32+ executable (GUI) x86-64, for MS Windows
                 x86-64 is 64 bits, Intel 80386 would be 32 bits.
 
                 Type i when asked if you want to install ReShade.
