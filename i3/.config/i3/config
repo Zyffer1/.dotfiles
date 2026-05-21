@@ -10,7 +10,7 @@ exec --no-startup-id dex --autostart --environment i3
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 exec --no-startup-id nm-applet
 exec --no-startup-id picom
-exec --no-startup-id feh --bg-fill ~/Pictures/dark-forest.jpg ~/Pictures/ruins.jpg
+exec --no-startup-id feh --bg-fill ~/Pictures/black.jpg
 
 #audo/laptop
 set $refresh_i3status killall -SIGUSR1 i3status
@@ -106,14 +106,13 @@ bar {
     font pango:JetBrainsMono Nerd Font 10
 
     colors {
-        # Catppuccin Mocha
-        background #1e1e2e
-        statusline #cdd6f4
-        separator  #45475a
+        background #000000
+        statusline #ffffff
+        separator  #ffffff
 
         #                  border  background text
-        focused_workspace  #89b4fa #89b4fa #1e1e2e
-        active_workspace   #313244 #313244 #cdd6f4
+        focused_workspace  #ffffff #ffffff #000000
+        active_workspace   #000000 #000000 #ffffff
         inactive_workspace #181825 #181825 #a6adc8
         urgent_workspace   #f38ba8 #f38ba8 #1e1e2e
         binding_mode       #f9e2af #f9e2af #1e1e2e

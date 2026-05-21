@@ -24,32 +24,8 @@ config.keys = {
 
 config.enable_wayland = false
 config.max_fps = 165
-
-local desktop = os.getenv("XDG_CURRENT_DESKTOP") or ""
-
-if desktop:lower():find("gnome") then
-  config.color_scheme = "Catppuccin Mocha"
-elseif desktop:lower():find("kde") then
-  config.color_scheme = "Catppuccin Mocha"
-else
-  config.window_background_opacity = 0.0
-  config.color_scheme = "Catppuccin Mocha"
-
-  table.insert(config.keys, {
-    key = "O",
-    mods = "CTRL|SHIFT",
-    action = wezterm.action_callback(function(window, _)
-      local overrides = window:get_config_overrides() or {}
-
-      if overrides.window_background_opacity == 1.0 then
-        overrides.window_background_opacity = 0.0
-      else
-        overrides.window_background_opacity = 1.0
-      end
-
-      window:set_config_overrides(overrides)
-    end),
-  })
-end
+config.window_background_opacity = 0.0
+config.color_scheme = "Catppuccin Mocha"
+font = wezterm.font 'jetbrains mono'
 
 return config
