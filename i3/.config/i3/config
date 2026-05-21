@@ -27,7 +27,7 @@ tiling_drag modifier titlebar
 bindsym $mod+Shift+q kill
 
 #opening stuff
-bindsym $mod+Return exec wezterm
+bindsym $mod+Return exec kitty
 bindsym $mod+d exec --no-startup-id rofi -show run
 bindsym $mod+Shift+l exec --no-startup-id i3lock -c 000000
 
