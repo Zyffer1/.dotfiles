@@ -20,9 +20,6 @@ rmproj() {
     rm -ri "$PROJECTS/$1"
 }
 
-# rename
-alias sudo='doas'
-
 # better shell utile
 alias ls='ls -la --color=auto'
 alias grep='grep --color=auto'
