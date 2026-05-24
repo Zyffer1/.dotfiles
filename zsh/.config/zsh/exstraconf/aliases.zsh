@@ -2,23 +2,7 @@
 alias sozsh='source ~/.zshrc'
 alias make.conf='sudo nvim /etc/makepkg.conf'
 
-# proj
-mkproj() {
-    mkdir -p "$PROJECTS/$1"
-}
-rmproj() {
-    if [ -z "$1" ]; then
-        echo "Usage: rmproj <project-name>"
-        return 1
-    fi
 
-    if [ -z "$PROJECTS" ]; then
-        echo "Error: PROJECTS is not set"
-        return 1
-    fi
-
-    rm -ri "$PROJECTS/$1"
-}
 
 # better shell utile
 alias ls='ls -la --color=auto'

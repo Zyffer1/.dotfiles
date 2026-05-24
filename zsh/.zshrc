@@ -7,4 +7,3 @@ neofetch
 printf "\n"
 printf "\n"
 
-export PATH=$PATH:$HOME/.spicetify
