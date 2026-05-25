@@ -1,5 +1,6 @@
 require("Zyffer.keymaps")
 require("Zyffer.set")
 require("Zyffer.lazy_init")
+require("Zyffer.autocmds")
 require("Zyffer.ftdetect")
 require("Zyffer.lspenable")

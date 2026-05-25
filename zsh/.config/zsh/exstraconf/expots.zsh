@@ -6,3 +6,4 @@ export PATH=$PATH:$HOME/.local/opt/go/bin
 export PATH=$PATH:$HOME/go/bin
 export TS_SEARCH_PATHS=(~/git:1)
 export MANPAGER='nvim +Man!'
+export PROJDIR="$HOME/git/"

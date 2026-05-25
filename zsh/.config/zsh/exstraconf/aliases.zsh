@@ -2,8 +2,6 @@
 alias sozsh='source ~/.zshrc'
 alias make.conf='sudo nvim /etc/makepkg.conf'
 
-
-
 # better shell utile
 alias ls='ls -la --color=auto'
 alias grep='grep --color=auto'

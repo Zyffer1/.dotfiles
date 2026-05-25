@@ -121,4 +121,4 @@ bar {
 
 #idk
 client.focused          #000000 #000000 #000000 #000000 #000000
-default_border normal
+default_border none
