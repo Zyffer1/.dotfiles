@@ -22,10 +22,14 @@ config.keys = {
   },
 }
 
+local rose_pine = wezterm.plugin.require('https://github.com/neapsix/wezterm').moon
+
+config.colors = rose_pine.colors()
+config.window_frame = rose_pine.window_frame()
+
 config.enable_wayland = false
 config.max_fps = 165
 config.window_background_opacity = 0.0
-config.color_scheme = "Rosé-Pine-Moon"
 config.automatically_reload_config = true
 font = wezterm.font 'jetbrains mono'
 
