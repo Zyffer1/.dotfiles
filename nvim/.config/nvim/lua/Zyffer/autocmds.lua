@@ -1,4 +1,4 @@
--- autocmd
+-- autocmd1
 vim.api.nvim_create_autocmd({ "TermOpen", "BufEnter" }, {
   group = group,
   callback = function()
@@ -8,7 +8,6 @@ vim.api.nvim_create_autocmd({ "TermOpen", "BufEnter" }, {
         silent = true,
         desc = "Close zsh command buffer",
       })
-      vim.cmd("colorscheme catppuccin-mocha")
       vim.cmd("startinsert")
     end
   end,
@@ -47,5 +46,6 @@ vim.api.nvim_create_autocmd("FileType", {
     })
 
     -- Oil window options
+    
   end,
 })
