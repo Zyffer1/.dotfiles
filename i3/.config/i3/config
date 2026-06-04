@@ -9,8 +9,8 @@ font pango:monospace 8
 exec --no-startup-id dex --autostart --environment i3
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 exec --no-startup-id nm-applet
-exec --no-startup-id picom
-exec --no-startup-id feh --bg-fill ~/Pictures/black.jpg
+exec_always --no-startup-id picom --config ~/.dotfiles/picom/.config/picom/picom.conf
+exec --no-startup-id feh --bg-fill ~/Pictures/davidcohen-EhSxbBCjr9A-unsplash.jpg
 
 #audo/laptop
 set $refresh_i3status killall -SIGUSR1 i3status

@@ -2,7 +2,7 @@
 
 cd "$HOME/.dotfiles" || exit 1
 
-stow -t ~ i3 zsh nvim tmux wezterm spicetify neofetch kitty
+stow -t ~ i3 zsh nvim tmux wezter
 sudo stow -t /root/ zsh nvim
 
 target="/etc/keyd/default.conf"
