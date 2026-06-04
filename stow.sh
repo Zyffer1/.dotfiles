@@ -2,7 +2,7 @@
 
 cd "$HOME/.dotfiles" || exit 1
 
-stow -t ~ i3 zsh nvim tmux wezter bat
+stow -t ~ i3 zsh nvim tmux wezterm bat
 sudo stow -t /root/ zsh nvim
 
 target="/etc/keyd/default.conf"
