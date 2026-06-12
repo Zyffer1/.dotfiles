@@ -51,6 +51,7 @@ workspace 6 output DisplayPort-2
 workspace 7 output DisplayPort-2
 workspace 8 output DisplayPort-2
 workspace 9 output DisplayPort-2
+#workspace 10 output DisplayPort-2
 workspace 10 output HDMI-A-0
 
 #move yourself thru workspaces 

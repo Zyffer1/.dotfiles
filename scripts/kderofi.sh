@@ -1,1 +1,0 @@
-exec rofi -show run
