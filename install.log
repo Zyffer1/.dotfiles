@@ -1,9 +1,0 @@
-[18:09:30 2026-06-15] FETCHING Version 2.43.2
-[18:09:30 2026-06-15] CREATING /home/idk/.spicetify
-[18:09:30 2026-06-15] DOWNLOADING https://github.com/spicetify/cli/releases/download/v2.43.2/spicetify-2.43.2-linux-amd64.tar.gz
-[18:09:31 2026-06-15] EXTRACTING /home/idk/.spicetify/spicetify.tar.gz
-[18:09:32 2026-06-15] SETTING EXECUTABLE PERMISSIONS TO /home/idk/.spicetify/spicetify
-[18:09:32 2026-06-15] REMOVING /home/idk/.spicetify/spicetify.tar.gz
-[18:09:32 2026-06-15] spicetify path already set in /home/idk/.zshrc, continuing...
-[18:09:32 2026-06-15] spicetify v2.43.2 was installed successfully to /home/idk/.spicetify
-[18:09:32 2026-06-15] Run 'spicetify --help' to get started
