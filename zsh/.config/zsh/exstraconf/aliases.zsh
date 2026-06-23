@@ -10,4 +10,3 @@ alias fzf='fzf -m --preview="bat --color=always {}"'
 alias suvi='sudo nvim'
 alias vi='nvim'
 alias nfzf='nvim $(fzf -m --preview="bat --color=always {}")'
-

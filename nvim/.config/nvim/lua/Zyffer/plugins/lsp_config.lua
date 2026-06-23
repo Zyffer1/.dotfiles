@@ -49,7 +49,7 @@ return {
             })
           end
 
-          vim.keymap.set("n", "<leader>e", function()
+          vim.keymap.set("n", "<leader>d", function()
             vim.diagnostic.open_float({ border = "rounded", source = true })
           end, {
             buffer = args.buf,
