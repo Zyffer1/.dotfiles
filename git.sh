@@ -2,7 +2,7 @@
 
 git add .
 git commit -m "hello"
-git push -u origin main -f & git push -u gitlab main -f
+git push -u github main && git push -u gitlab main 
 
 mkdir -p "$HOME/bk"
 cp -r "$PWD" "$HOME/bk"
