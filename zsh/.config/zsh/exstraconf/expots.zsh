@@ -1,9 +1,9 @@
 export EDITOR=nvim
-export PATH="$HOME/.dotfiles/scripts/:$PATH"
+export PATH="$HOME/me/.dotfiles/scripts/:$PATH"
 export PATH="$HOME/.spicetify:$PATH"
-export PATH="$HOME/.local/bin:$PATH"
 export PATH=$PATH:$HOME/.local/opt/go/bin
 export PATH=$PATH:$HOME/go/bin
 export TS_SEARCH_PATHS=(~/git:1)
 export MANPAGER='nvim +Man!'
 export PROJDIR="$HOME/git/"
+export PATH="$HOME/.local/bin:$PATH"

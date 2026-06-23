@@ -31,13 +31,6 @@ return {
         return in_comment_or_string()
       end
 
-      vim.api.nvim_create_autocmd({ "BufEnter", "FileType", "LspAttach", "LspDetach" }, {
-        callback = function()
-          vim.opt_local.spell = true
-          vim.opt_local.spelllang = { "en", "nb" }
-        end,
-      })
-
       cmp.setup({
         completion = {
           autocomplete = { cmp.TriggerEvent.TextChanged },

@@ -1,7 +1,8 @@
-return{
-    'numToStr/Comment.nvim',
-    opts = {
-        -- add any options here
-    }
+return {
+  "numToStr/Comment.nvim",
+  keys = {
+    { "gc", mode = { "n", "x" }, desc = "Comment toggle" },
+  },
+  opts = {},
 }
 

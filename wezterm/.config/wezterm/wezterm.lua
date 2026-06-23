@@ -31,6 +31,7 @@ config.enable_wayland = false
 config.max_fps = 165
 config.window_background_opacity = 0.0
 config.automatically_reload_config = true
+config.front_end = "WebGpu"
 font = wezterm.font 'jetbrains mono'
 
 return config

@@ -1,12 +1,12 @@
 #!/bin/bash
 
-cd "$HOME/.dotfiles" || exit 1
+cd "$HOME/me/.dotfiles" || exit 1
 
-stow -t ~ i3 zsh nvim tmux wezterm bat
+stow -t ~ i3 zsh nvim tmux wezterm bat opencode bash picom vim
 sudo stow -t /root/ zsh nvim
 
 target="/etc/keyd/default.conf"
-source="$HOME/.dotfiles/default.conf"
+source="$HOME/me/.dotfiles/default.conf"
 
 if [ ! -L "$target" ]; then
     if [ -e "$target" ]; then

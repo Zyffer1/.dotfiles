@@ -1,0 +1,405 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+IFS=$'\n\t'
+
+# selfhost - small Docker Compose helper for ~/me/selfhost
+# Target path: ~/me/.dotfiles/scripts/selfhost
+# Usage examples:
+#   selfhost searX start
+#   selfhost searX status
+#   selfhost searX restart
+#   selfhost searX stop
+#   selfhost searX doctor
+#   selfhost autostart
+
+SELFHOST_ROOT="${SELFHOST_ROOT:-$HOME/me/selfhost}"
+SEARX_URL="${SEARX_URL:-http://127.0.0.1:8080/}"
+DEFAULT_SERVICES=("searX")
+
+usage() {
+  cat <<USAGE
+Usage:
+  selfhost help
+  selfhost list
+  selfhost doctor [service]
+  selfhost autostart
+  selfhost start-all|stop-all|restart-all|status-all|update-all
+  selfhost <service> start|stop|restart|status|logs|pull|update|up|down|config|doctor|url|open
+
+Examples:
+  selfhost searX start
+  selfhost searX status
+  selfhost searX logs
+  selfhost searX logs --tail=50
+  selfhost searX restart
+  selfhost searX doctor
+  selfhost autostart
+
+Root folder:
+  $SELFHOST_ROOT
+
+Environment overrides:
+  SELFHOST_ROOT=/path/to/selfhost selfhost list
+  SEARX_URL=http://127.0.0.1:8080/ selfhost searX status
+USAGE
+}
+
+info() {
+  printf '==> %s\n' "$*"
+}
+
+ok() {
+  printf 'ok: %s\n' "$*"
+}
+
+warn() {
+  printf 'warning: %s\n' "$*" >&2
+}
+
+fail() {
+  printf 'error: %s\n' "$*" >&2
+  exit 1
+}
+
+have_cmd() {
+  command -v "$1" >/dev/null 2>&1
+}
+
+need_cmd() {
+  have_cmd "$1" || fail "missing command: $1"
+}
+
+validate_service_name() {
+  local service="$1"
+
+  [[ -n "$service" ]] || fail "empty service name"
+  [[ "$service" != *'/'* ]] || fail "service name must not contain /"
+  [[ "$service" != *'..'* ]] || fail "service name must not contain .."
+  [[ "$service" =~ ^[A-Za-z0-9._-]+$ ]] || fail "service name has unsupported characters: $service"
+}
+
+need_compose_plugin() {
+  docker compose version >/dev/null 2>&1 || fail "Docker Compose plugin is missing. Install Docker Compose v2 so 'docker compose' works."
+}
+
+need_docker() {
+  need_cmd docker
+  need_compose_plugin
+
+  if docker info >/dev/null 2>&1; then
+    return 0
+  fi
+
+  if [[ ! -S /var/run/docker.sock ]]; then
+    fail "Docker daemon is not reachable. Try: sudo systemctl enable --now docker"
+  fi
+
+  fail "Docker is running, but this user cannot access /var/run/docker.sock. Try: sudo usermod -aG docker \"$USER\", then log out and back in."
+}
+
+has_compose_file() {
+  local dir="$1"
+  [[ -f "$dir/docker-compose.yml" || -f "$dir/docker-compose.yaml" || -f "$dir/compose.yml" || -f "$dir/compose.yaml" ]]
+}
+
+service_dir() {
+  local service="$1"
+  local dir
+
+  validate_service_name "$service"
+  dir="$SELFHOST_ROOT/$service"
+
+  [[ -d "$dir" ]] || fail "service folder not found: $dir"
+  has_compose_file "$dir" || fail "no compose file found in: $dir"
+
+  printf '%s\n' "$dir"
+}
+
+compose() {
+  local service="$1"
+  shift
+
+  local dir
+  dir="$(service_dir "$service")"
+  need_docker
+
+  (
+    cd "$dir"
+    docker compose "$@"
+  )
+}
+
+known_services() {
+  local dir
+  local name
+
+  [[ -d "$SELFHOST_ROOT" ]] || return 0
+
+  for dir in "$SELFHOST_ROOT"/*; do
+    [[ -d "$dir" ]] || continue
+    has_compose_file "$dir" || continue
+    name="${dir##*/}"
+    printf '%s\n' "$name"
+  done | sort
+}
+
+services_for_all() {
+  local existing=()
+  local service
+
+  for service in "${DEFAULT_SERVICES[@]}"; do
+    if [[ -d "$SELFHOST_ROOT/$service" ]] && has_compose_file "$SELFHOST_ROOT/$service"; then
+      existing+=("$service")
+    fi
+  done
+
+  if [[ "${#existing[@]}" -gt 0 ]]; then
+    printf '%s\n' "${existing[@]}"
+  else
+    known_services
+  fi
+}
+
+service_url() {
+  local service="$1"
+
+  case "$service" in
+    searX|searx|searxng|SearXNG)
+      printf '%s\n' "$SEARX_URL"
+      ;;
+    *)
+      return 1
+      ;;
+  esac
+}
+
+status_health_hint() {
+  local service="$1"
+  local url
+
+  if ! url="$(service_url "$service")"; then
+    return 0
+  fi
+
+  if ! have_cmd curl; then
+    warn "curl is missing, so health check was skipped"
+    return 0
+  fi
+
+  if curl -fsSI --max-time 3 "$url" >/dev/null 2>&1 || curl -fsS --max-time 3 -o /dev/null "$url" >/dev/null 2>&1; then
+    printf '\nhealth: %s is OK\n' "$url"
+  else
+    printf '\nhealth: %s did not answer OK\n' "$url"
+    printf 'hint: try: selfhost %s logs\n' "$service"
+    printf 'hint: try: selfhost %s doctor\n' "$service"
+  fi
+}
+
+open_service() {
+  local service="$1"
+  local url
+
+  url="$(service_url "$service")" || fail "no known URL for service: $service"
+  printf '%s\n' "$url"
+
+  if have_cmd xdg-open; then
+    xdg-open "$url" >/dev/null 2>&1 &
+  else
+    warn "xdg-open is missing; open the URL manually"
+  fi
+}
+
+run_service_action() {
+  local service="$1"
+  local action="$2"
+  shift 2
+
+  case "$action" in
+    start|up)
+      compose "$service" up -d "$@"
+      ;;
+    stop|down)
+      compose "$service" down --remove-orphans "$@"
+      ;;
+    restart)
+      compose "$service" down --remove-orphans
+      compose "$service" up -d "$@"
+      ;;
+    status|ps)
+      compose "$service" ps "$@"
+      status_health_hint "$service"
+      ;;
+    logs)
+      if [[ "$#" -eq 0 ]]; then
+        compose "$service" logs -f --tail=100
+      else
+        compose "$service" logs "$@"
+      fi
+      ;;
+    pull)
+      compose "$service" pull "$@"
+      ;;
+    update)
+      compose "$service" pull
+      compose "$service" up -d --remove-orphans "$@"
+      ;;
+    recreate)
+      compose "$service" up -d --force-recreate "$@"
+      ;;
+    config)
+      compose "$service" config "$@"
+      ;;
+    doctor)
+      doctor "$service"
+      ;;
+    url)
+      service_url "$service" || fail "no known URL for service: $service"
+      ;;
+    open)
+      open_service "$service"
+      ;;
+    *)
+      usage
+      fail "unknown action: $action"
+      ;;
+  esac
+}
+
+run_all() {
+  local action="$1"
+  local service
+  local found=0
+
+  while IFS= read -r service; do
+    [[ -n "$service" ]] || continue
+    found=1
+    info "$service"
+    run_service_action "$service" "$action"
+  done < <(services_for_all)
+
+  [[ "$found" -eq 1 ]] || fail "no compose service folders found under: $SELFHOST_ROOT"
+}
+
+check_item() {
+  local label="$1"
+  shift
+
+  if "$@" >/dev/null 2>&1; then
+    ok "$label"
+    return 0
+  fi
+
+  printf 'fail: %s\n' "$label" >&2
+  return 1
+}
+
+doctor() {
+  local service="${1:-}"
+  local failures=0
+  local dir
+  local url
+
+  info "checking selfhost setup"
+
+  check_item "root folder exists: $SELFHOST_ROOT" test -d "$SELFHOST_ROOT" || failures=$((failures + 1))
+  check_item "docker command exists" command -v docker || failures=$((failures + 1))
+
+  if have_cmd docker; then
+    check_item "docker compose plugin works" docker compose version || failures=$((failures + 1))
+    check_item "docker daemon is reachable" docker info || failures=$((failures + 1))
+  fi
+
+  if [[ -n "$service" ]]; then
+    validate_service_name "$service"
+    dir="$SELFHOST_ROOT/$service"
+
+    check_item "service folder exists: $dir" test -d "$dir" || failures=$((failures + 1))
+    check_item "compose file exists for: $service" has_compose_file "$dir" || failures=$((failures + 1))
+
+    if [[ -d "$dir" ]] && has_compose_file "$dir" && have_cmd docker && docker info >/dev/null 2>&1; then
+      (
+        cd "$dir"
+        docker compose config -q
+      ) >/dev/null 2>&1 && ok "compose config is valid" || { printf 'fail: compose config is invalid\n' >&2; failures=$((failures + 1)); }
+    fi
+
+    if url="$(service_url "$service")"; then
+      if have_cmd curl && curl -fsSI --max-time 3 "$url" >/dev/null 2>&1; then
+        ok "health check passed: $url"
+      else
+        warn "health check did not pass: $url"
+      fi
+    fi
+  fi
+
+  if [[ "$failures" -gt 0 ]]; then
+    printf '\n%s check(s) failed. Fix the first failing line first.\n' "$failures" >&2
+    return 1
+  fi
+
+  printf '\nAll checks passed.\n'
+}
+
+enable_autostart() {
+  need_cmd sudo
+  need_cmd systemctl
+
+  info "enabling Docker on boot"
+  sudo systemctl enable --now docker.service
+
+  if systemctl list-unit-files containerd.service >/dev/null 2>&1; then
+    sudo systemctl enable --now containerd.service || true
+  fi
+
+  printf '\n'
+  info "starting default selfhost services"
+  run_all start
+
+  printf '\nAutostart note:\n'
+  printf '  Docker is enabled on boot. Compose services should use restart: unless-stopped.\n'
+  printf '  Check with: selfhost status-all\n'
+}
+
+main() {
+  if [[ "$#" -eq 0 ]]; then
+    usage
+    exit 0
+  fi
+
+  case "$1" in
+    -h|--help|help)
+      usage
+      ;;
+    list)
+      known_services
+      ;;
+    doctor)
+      shift
+      doctor "${1:-}"
+      ;;
+    autostart|enable-autostart)
+      enable_autostart
+      ;;
+    start-all)
+      run_all start
+      ;;
+    stop-all)
+      run_all stop
+      ;;
+    restart-all)
+      run_all restart
+      ;;
+    status-all)
+      run_all status
+      ;;
+    update-all)
+      run_all update
+      ;;
+    *)
+      [[ "$#" -ge 2 ]] || { usage; fail "missing action for service: $1"; }
+      run_service_action "$@"
+      ;;
+  esac
+}
+
+main "$@"

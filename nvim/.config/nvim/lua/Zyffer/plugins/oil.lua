@@ -1,7 +1,11 @@
 return {
   {
     "stevearc/oil.nvim",
-    dependencies = { "nvim-tree/nvim-web-devicons", "nvim-mini/mini.icons" },
+    dependencies = { "nvim-mini/mini.icons" },
+    keys = {
+      { "<leader>e", desc = "Open parent directory" },
+      { "<leader>E", desc = "Toggle oil float" },
+    },
     config = function()
       require("oil").setup {
         view_options = {

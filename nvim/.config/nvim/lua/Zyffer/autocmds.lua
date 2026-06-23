@@ -1,18 +1,31 @@
--- autocmd1
+local terminal_group = vim.api.nvim_create_augroup("ZyfferTerminal", { clear = true })
+local man_group = vim.api.nvim_create_augroup("ZyfferMan", { clear = true })
+local oil_group = vim.api.nvim_create_augroup("ZyfferOil", { clear = true })
+local spell_group = vim.api.nvim_create_augroup("ZyfferSpell", { clear = true })
+
+local spell_filetypes = {
+  gitcommit = true,
+  help = true,
+  markdown = true,
+  text = true,
+}
+
 vim.api.nvim_create_autocmd({ "TermOpen", "BufEnter" }, {
-  group = group,
-  callback = function()
-    if vim.bo.buftype == "terminal" then
+  group = terminal_group,
+  callback = function(args)
+    if vim.bo[args.buf].buftype == "terminal" then
       vim.keymap.set("n", "q", ":q!<CR>", {
-        buffer = true,
+        buffer = args.buf,
         silent = true,
-        desc = "Close zsh command buffer",
+        desc = "Close terminal",
       })
       vim.cmd("startinsert")
     end
   end,
 })
+
 vim.api.nvim_create_autocmd("FileType", {
+  group = man_group,
   pattern = "man",
   callback = function()
     vim.opt_local.number = false
@@ -25,11 +38,10 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.opt_local.colorcolumn = ""
     vim.opt_local.statusline = " "
 
-    -- local remaps only for this zsh buffer
     vim.keymap.set("n", "q", ":q!<CR>", {
       buffer = true,
       silent = true,
-      desc = "Close zsh command buffer",
+      desc = "Close man page",
     })
   end,
 })
@@ -44,8 +56,19 @@ vim.api.nvim_create_autocmd("FileType", {
       silent = true,
       desc = "Close Oil",
     })
+  end,
+})
 
-    -- Oil window options
-    
+vim.api.nvim_create_autocmd("FileType", {
+  group = spell_group,
+  pattern = "*",
+  callback = function(args)
+    local spell = spell_filetypes[vim.bo[args.buf].filetype] == true
+
+    vim.opt_local.spell = spell
+
+    if spell then
+      vim.opt_local.spelllang = { "en", "nb" }
+    end
   end,
 })

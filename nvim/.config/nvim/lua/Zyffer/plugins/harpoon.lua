@@ -4,6 +4,20 @@ return {
   dependencies = {
     "nvim-lua/plenary.nvim",
   },
+  keys = {
+    { "<leader>a", desc = "Harpoon add file" },
+    { "<C-e>", desc = "Harpoon menu" },
+    { "<leader>1", desc = "Harpoon file 1" },
+    { "<leader>2", desc = "Harpoon file 2" },
+    { "<leader>3", desc = "Harpoon file 3" },
+    { "<leader>4", desc = "Harpoon file 4" },
+    { "<leader>5", desc = "Harpoon file 5" },
+    { "<leader>6", desc = "Harpoon file 6" },
+    { "<leader>7", desc = "Harpoon file 7" },
+    { "<leader>8", desc = "Harpoon file 8" },
+    { "<leader>9", desc = "Harpoon file 9" },
+    { "<leader>0", desc = "Harpoon file 10" },
+  },
   config = function()
     local harpoon = require("harpoon")
 
