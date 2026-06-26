@@ -599,6 +599,7 @@ Every visual application uses **rose-pine-moon** (dark purple theme):
 - **No mouse in editor** — Neovim has `mouse=""`
 - **No AI in editor** — AI is in OpenCode, separate from editing
 - **No SaaS** — everything self-hosted or local
+- **No fancy bullshit** — no decorative UI, no animations, no eye candy. Everything must have a purpose.
 - **No fancy UI plugins** — minimal neovim UI
 - **Vi-mode everywhere** — zsh, tmux, neovim all vi-navigation
 
