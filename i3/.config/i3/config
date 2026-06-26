@@ -9,7 +9,7 @@ font pango:monospace 8
 exec --no-startup-id dex --autostart --environment i3
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 exec --no-startup-id nm-applet
-exec_always --no-startup-id picom --config ~/.dotfiles/picom/.config/picom/picom.conf
+exec_always --no-startup-id picom --config ~/me/.dotfiles/picom/.config/picom/picom.conf
 exec --no-startup-id feh --bg-fill ~/Pictures/davidcohen-EhSxbBCjr9A-unsplash.jpg
 
 #audo/laptop
@@ -28,7 +28,7 @@ bindsym $mod+Shift+q kill
 
 #opening stuff
 bindsym $mod+Return exec wezterm
-bindsym $mod+d exec --no-startup-id rofi -show run
+bindsym $mod+d exec --no-startup-id rofi -show drun
 bindsym $mod+Shift+l exec --no-startup-id i3lock -c 000000
 
 #focus
@@ -54,7 +54,7 @@ workspace 9 output DP-3
 #workspace 10 output DisplayPort-2
 workspace 10 output HDMI-1
 
-#move yourself thru workspaces 
+#move yourself thru workspaces
 bindsym $mod+1 workspace 1
 bindsym $mod+2 workspace 2
 bindsym $mod+3 workspace 3
@@ -92,7 +92,7 @@ mode "resize" {
   bindsym j resize grow height 10 px or 10 ppt
   bindsym k resize shrink height 10 px or 10 ppt
   bindsym l resize grow width 10 px or 10 ppt
-  
+
   bindsym Return mode "default"
   bindsym Escape mode "default"
   bindsym $mod+r mode "default"

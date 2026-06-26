@@ -1,8 +1,8 @@
 #!/bin/bash
 
-cd "$HOME/me/.dotfiles" || exit 1
+cd "$HOME/me/personal/.dotfiles" || exit 1
 
-stow -t ~ i3 zsh nvim tmux wezterm bat opencode bash picom vim
+stow -t ~ i3 zsh nvim tmux wezterm bat opencode bash picom vim 
 
 target="/etc/keyd/default.conf"
 source="$HOME/me/.dotfiles/default.conf"

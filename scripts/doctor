@@ -1,0 +1,57 @@
+#!/bin/bash
+# scripts/doctor — Check that all expected tools are installed
+
+missing=()
+check() {
+  if ! command -v "$1" &>/dev/null; then
+    missing+=("$1")
+    echo "  ❌ $1"
+  else
+    echo "  ✅ $1"
+  fi
+}
+
+echo "=== Dotfiles Doctor ==="
+echo ""
+
+echo "Shell & tools:"
+check zsh
+check bash
+check git
+check stow
+
+echo ""
+echo "Terminal & editor:"
+check nvim
+check wezterm
+check tmux
+check ghostty
+
+echo ""
+echo "CLI tools:"
+check eza
+check bat
+check fzf
+check fd
+check rg
+check zoxide
+check tealdeer
+check jq
+check lazygit
+
+echo ""
+echo "WM & desktop:"
+check i3
+check picom
+check rofi
+check i3lock
+check pactl
+check feh
+
+echo ""
+echo "---"
+if [ ${#missing[@]} -eq 0 ]; then
+  echo "✅ Everything looks good!"
+else
+  echo "❌ Missing (${#missing[@]}): ${missing[*]}"
+fi
