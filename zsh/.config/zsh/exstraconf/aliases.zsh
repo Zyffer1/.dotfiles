@@ -2,8 +2,10 @@
 alias sozsh='source ~/.zshrc'
 
 # better shell utile
-alias ls='ls -lah --color=auto'
+alias ls='eza -la --icons --git'
+alias tree='eza --tree'
 alias grep='grep --color=auto'
+alias help='tldr'
 alias fzf='fzf -m --preview="bat --color=always {}"'
 
 #nvim

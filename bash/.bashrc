@@ -7,9 +7,7 @@
 
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
-alias clear='clear && neofetch'
-# PS1='[\u@\h \W]\$ '
 
-neofetch
-printf "\n"
-printf "\n"
+export EDITOR=nvim
+export PATH="$HOME/me/.dotfiles/scripts/:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
