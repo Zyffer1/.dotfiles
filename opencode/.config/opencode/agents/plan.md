@@ -48,7 +48,7 @@ Automatically launch:
 
 ### Phase 4: Write to plan.md
 
-6. **`researcher`** — "Write the approved plan to `opencode/plan.md` under the appropriate section. Include all details the setup agent needs to execute."
+6. **`researcher`** — "Write the approved plan to `~/me/ai/plan.md` under the appropriate section, and update `~/me/ai/aiinfo.md` with the durable summary. Include all details the setup agent needs to execute."
 
 ### Phase 5: Hand off
 

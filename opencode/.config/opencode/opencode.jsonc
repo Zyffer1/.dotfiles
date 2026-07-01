@@ -1,9 +1,27 @@
 {
   "$schema": "https://opencode.ai/config.json",
 
-  "default_agent": "setup",
+  "plugin": [
+    "opencode-autodiscover",
+    "@mohak34/opencode-notifier@latest"
+  ],
 
+  "default_agent": "setup",
   "lsp": true,
+
+  "model": "ollama/qwen2.5-coder:7b",
+  "small_model": "ollama/llama3.2:3b",
+
+  "provider": {
+    "ollama": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Ollama Laptop",
+      "options": {
+        "baseURL": "http://localhost:11434/v1",
+        "exclude": ["*embed*", "*embedding*"]
+      }
+    }
+  },
 
   "agent": {
     "setup": {
@@ -19,7 +37,7 @@
       }
     },
     "build": {
-      "description": "Efficient implementation — takes an approved plan and executes it.",
+      "description": "Efficient implementation - takes an approved plan and executes it.",
       "mode": "subagent",
       "permission": {
         "read": "allow",
@@ -31,7 +49,7 @@
       }
     },
     "researcher": {
-      "description": "Researches the setup — reads files, searches web, documents in context.md and plan.md.",
+      "description": "Researches the setup - reads files, searches web, documents findings in ~/me/ai/aiinfo.md and ~/me/ai/plan.md.",
       "mode": "subagent"
     },
     "driver": {
@@ -43,11 +61,11 @@
       "mode": "subagent"
     },
     "tester": {
-      "description": "Project reviewer. Gives feedback about the current project — does NOT code.",
+      "description": "Project reviewer. Gives feedback about the current project - does NOT code.",
       "mode": "subagent"
     },
     "verifier": {
-      "description": "Plan review (pre) and verification checklist (post). Confirms everything works.",
+      "description": "Plan review pre and verification checklist post. Confirms everything works.",
       "mode": "subagent"
     },
     "idea-maker": {
