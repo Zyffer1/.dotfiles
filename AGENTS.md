@@ -480,6 +480,20 @@ opencode/.config/opencode/
   package-lock.json
 ```
 
+#### Shared Context File
+
+Use `~/me/ai/aiinfo.md` as the shared durable scratchpad for both Codex and
+OpenCode. Keep it up to date with:
+
+- `Memory` for stable facts and decisions
+- `Logs` for notable actions and verification notes
+- `Context` for current workspace state
+- `Info` for paths, links, and other references
+
+Use `~/me/ai/plan.md` for active planning, phase breakdowns, and task lists.
+Move durable conclusions from `plan.md` into `aiinfo.md` when a plan is
+finished.
+
 #### MCP Servers (in opencode.jsonc)
 
 | Server | Tool | Purpose |
@@ -630,7 +644,7 @@ add them manually.
 Some files referenced in the old doc no longer exist:
 - `opencode/test_opencode.sh` — deleted
 - `opencode/AGENTS.md` — deleted (merged into this file)
-- `opencode/context.md` — deleted (merged into this file)
+- `opencode/context.md` — retired in favor of `~/me/aiinfo.md`
 - `opencode/plan.md` — deleted
 - `opencode/.stow-local-ignore` — deleted
 - `nvim/test_nvim_config.sh` — deleted

@@ -25,13 +25,14 @@ config.keys = {
 local rose_pine = wezterm.plugin.require('https://github.com/neapsix/wezterm').moon
 
 config.colors = rose_pine.colors()
+config.colors.background = "#000000"
 config.window_frame = rose_pine.window_frame()
 
 config.enable_wayland = false
 config.max_fps = 165
-config.window_background_opacity = 0.0
+config.window_background_opacity = 1
 config.automatically_reload_config = true
-config.front_end = "WebGpu"
-font = wezterm.font 'jetbrains mono'
+--config.front_end = "WebGpu"
+config.font = wezterm.font 'JetBrains Mono'
 
 return config

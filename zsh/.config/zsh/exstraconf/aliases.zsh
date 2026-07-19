@@ -1,6 +1,10 @@
 # shortening
 alias sozsh='source ~/.zshrc'
 
+# gentoo
+alias emerge='sudo emerge '
+alias dispatch-conf='sudo dispatch-conf'
+
 # better shell utile
 alias ls='eza -la --icons --git'
 alias tree='eza --tree'

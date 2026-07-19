@@ -9,8 +9,8 @@ font pango:monospace 8
 exec --no-startup-id dex --autostart --environment i3
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 exec --no-startup-id nm-applet
-exec_always --no-startup-id picom --config ~/me/.dotfiles/picom/.config/picom/picom.conf
 exec --no-startup-id feh --bg-fill ~/Pictures/davidcohen-EhSxbBCjr9A-unsplash.jpg
+exec --no-startup-id gentoo-pipewire-launcher
 
 #audo/laptop
 set $refresh_i3status killall -SIGUSR1 i3status
@@ -42,19 +42,17 @@ bindsym $mod+f fullscreen toggle
 bindsym $mod+space floating toggle
 
 #workspace declaration
-workspace 1 output DP-3
-workspace 2 output DP-3
-workspace 3 output DP-3
-workspace 4 output DP-3
-workspace 5 output DP-3
-workspace 6 output DP-3
-workspace 7 output DP-3
-workspace 8 output DP-3
-workspace 9 output DP-3
-#workspace 10 output DisplayPort-2
-workspace 10 output HDMI-1
+workspace 1 output DisplayPort-2
+workspace 2 output DisplayPort-2
+workspace 3 output DisplayPort-2
+workspace 4 output DisplayPort-2
+workspace 5 output DisplayPort-2
+workspace 6 output DisplayPort-2
+workspace 7 output DisplayPort-2
+workspace 8 output DisplayPort-2
+workspace 9 output DisplayPort-2
+workspace 10 output HDMI-A-0
 
-#move yourself thru workspaces
 bindsym $mod+1 workspace 1
 bindsym $mod+2 workspace 2
 bindsym $mod+3 workspace 3
@@ -65,10 +63,7 @@ bindsym $mod+7 workspace 7
 bindsym $mod+8 workspace 8
 bindsym $mod+9 workspace 9
 bindsym $mod+0 workspace 10
-bindsym $mod+Ctrl+Shift+mod1+1 workspace 11
 
-#move windows between workspaces
-# move focused window between workspaces
 bindsym Mod4+Shift+1 move container to workspace number 1
 bindsym Mod4+Shift+2 move container to workspace number 2
 bindsym Mod4+Shift+3 move container to workspace number 3
@@ -86,32 +81,27 @@ bindsym $mod+Ctrl+Shift+r exec source ~/.zshrc
 
 bindsym $mod+m exec i3-msg exit
 
-# resize window (you can also use the mouse for that)
+# resize window
 mode "resize" {
   bindsym h resize shrink width 10 px or 10 ppt
   bindsym j resize grow height 10 px or 10 ppt
   bindsym k resize shrink height 10 px or 10 ppt
   bindsym l resize grow width 10 px or 10 ppt
-
   bindsym Return mode "default"
   bindsym Escape mode "default"
   bindsym $mod+r mode "default"
 }
 bindsym $mod+r mode "resize"
 
-# Catppuccin Mocha i3bar
 bar {
     position bottom
     status_command i3status --config ~/.config/i3status/config
     tray_output primary
     font pango:JetBrainsMono Nerd Font 10
-
     colors {
         background #000000
         statusline #ffffff
         separator  #ffffff
-
-        #                  border  background text
         focused_workspace  #ffffff #ffffff #000000
         active_workspace   #000000 #000000 #ffffff
         inactive_workspace #181825 #181825 #a6adc8
@@ -120,6 +110,5 @@ bar {
     }
 }
 
-#idk
 client.focused          #000000 #000000 #000000 #000000 #000000
 default_border none
