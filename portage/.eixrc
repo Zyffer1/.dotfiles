@@ -1,0 +1,70 @@
+# eix rose-pine-moon color scheme
+# ANSI256 approximations of rose-pine-moon palette:
+#   base:235 bg:236 surface:238 overlay:240 muted:243 subtle:246
+#   text:254 iris:141 foam:109 pine:67 gold:215 rose:168 love:168
+
+TERM="tmux-256color"
+FORCE_USECOLORS="true"
+NOCOLORS=""
+COLORED_SLOTS="true"
+COLOR_ORIGINAL="true"
+
+COLOR_RESET=";%{BG0S}|;%{BG1}|;%{BG2}|;%{BG3}"
+COLOR_RESET_BG="none;%{BG0S}|none;%{BG1}|none;%{BG2}|none;%{BG3}"
+
+# package name: text (near white)
+COLOR_NAME="254,1;%{BG0S}|254,1;%{BG1}|254,1;%{BG2}|254;%{BG3}"
+
+# category: pine (teal)
+COLOR_CATEGORY="67;%{BG0S}|67;%{BG1}|67;%{BG2}|67;%{BG3}"
+COLOR_CATEGORY_SYSTEM="215;%{BG0S}|215;%{BG1}|215;%{BG2}|215;%{BG3}"
+COLOR_CATEGORY_PROFILE="109;%{BG0S}|109;%{BG1}|109;%{BG2}|109;%{BG3}"
+
+# world: foam (light cyan)
+COLOR_WORLD="109,1;%{BG0S}|109,1;%{BG1}|109,1;%{BG2}|109,1;%{BG3}"
+
+# world sets: iris (soft purple)
+COLOR_WORLD_SETS="141,1;%{BG0S}|141,1;%{BG1}|141,1;%{BG2}|141,1;%{BG3}"
+
+# upgrade: foam bold
+COLOR_UPGRADE_TEXT="109,1;%{BG0S}|109,1;%{BG1}|109,1;%{BG2}|109,1;%{BG3}"
+COLOR_UPGRADE="%{COLOR_UPGRADE_TEXT;inverse}"
+
+# downgrade: gold bold
+COLOR_DOWNGRADE_TEXT="215,1;%{BG0S}|215,1;%{BG1}|215,1;%{BG2}|215,1;%{BG3}"
+COLOR_DOWNGRADE="%{COLOR_DOWNGRADE_TEXT;inverse}"
+
+# marked: rose (pink)
+COLOR_MARKED="168,1;%{BG0S}|168,1;%{BG1}|168,1;%{BG2}|168,1;%{BG3}"
+
+# stable/keyword masked: muted
+COLOR_STABLE="243;%{BG0S}|243;%{BG1}|243;%{BG2}|243;%{BG3}"
+COLOR_MASKED="243;%{BG0S}|243;%{BG1}|243;%{BG2}|243;%{BG3}"
+
+# slots: subtle
+COLOR_SLOT="246;%{BG0S}|246;%{BG1}|246;%{BG2}|246;%{BG3}"
+
+# version: text
+COLOR_VERSION="254;%{BG0S}|254;%{BG1}|254;%{BG2}|254;%{BG3}"
+
+# description: muted
+COLOR_DESCRIPTION="243;%{BG0S}|243;%{BG1}|243;%{BG2}|243;%{BG3}"
+
+# homepage: pine
+COLOR_HOMEPAGE="67;%{BG0S}|67;%{BG1}|67;%{BG2}|67;%{BG3}"
+
+# depend: subtle
+COLOR_DEPEND="246;%{BG0S}|246;%{BG1}|246;%{BG2}|246;%{BG3}"
+COLOR_DEPEND_END="%{COLOR_RESET}"
+
+# binary: gold
+COLOR_BINARY="215;%{BG0S}|215;%{BG1}|215;%{BG2}|215;%{BG3}"
+
+# diff colors
+DIFF_COLOR_UNINST_STABILIZE="%{COLOR_STABLE,1}"
+DIFF_COLOR_INST_STABILIZE="%{DIFF_COLOR_UNINST_STABILIZE;inverse}"
+DIFF_COLOR_BETTER="%{COLOR_UPGRADE}"
+DIFF_COLOR_WORSE="%{COLOR_DOWNGRADE}"
+DIFF_COLOR_SAME="%{COLOR_VERSION}"
+DIFF_COLOR_REMOVED="%{COLOR_MASKED}"
+DIFF_COLOR_ADDED="%{COLOR_WORLD}"

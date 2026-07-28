@@ -1,5 +1,5 @@
 #exstra config
-for file in ~/.config/zsh/exstraconf/*.zsh; do
+for file in ~/.config/zsh/*.zsh; do
   [ -f "$file" ] && source "$file"
 done
 
