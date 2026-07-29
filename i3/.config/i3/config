@@ -9,13 +9,10 @@ font pango:monospace 8
 exec --no-startup-id dex --autostart --environment i3
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 exec --no-startup-id nm-applet
-<<<<<<< HEAD
 # exec --no-startup-id xwallpaper --center ~/Pictures/davidcohen-EhSxbBCjr9A-unsplash.jpg
 exec --no-startup-id gentoo-pipewire-launcher
 exec --no-startup-id easyeffects --service-mode --hide-window
-=======
 exec --no-startup-id feh --bg-fill ~/Pictures/davidcohen-EhSxbBCjr9A-unsplash.jpg
->>>>>>> gitlab/main
 
 #audo/laptop
 set $refresh_i3status killall -SIGUSR1 i3status
@@ -32,7 +29,7 @@ tiling_drag modifier titlebar
 bindsym $mod+Shift+q kill
 
 #opening stuff
-bindsym $mod+Return exec ghostty
+bindsym $mod+Return exec wezterm
 bindsym $mod+d exec --no-startup-id rofi -show drun
 bindsym $mod+Shift+l exec --no-startup-id i3lock -c 000000
 
@@ -47,7 +44,6 @@ bindsym $mod+f fullscreen toggle
 bindsym $mod+space floating toggle
 
 #workspace declaration
-<<<<<<< HEAD
 workspace 1 output DisplayPort-2
 workspace 2 output DisplayPort-2
 workspace 3 output DisplayPort-2
@@ -58,7 +54,6 @@ workspace 7 output DisplayPort-2
 workspace 8 output DisplayPort-2
 workspace 9 output DisplayPort-2
 workspace 10 output HDMI-A-0
-=======
 workspace 1 output DP-3
 workspace 2 output DP-3
 workspace 3 output DP-3
@@ -69,7 +64,6 @@ workspace 7 output DP-3
 workspace 8 output DP-3
 workspace 9 output DP-3
 workspace 10 output HDMI-1
->>>>>>> gitlab/main
 
 bindsym $mod+1 workspace 1
 bindsym $mod+2 workspace 2
