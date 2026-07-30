@@ -2,7 +2,9 @@
 
 cd "$HOME/me/personal/.dotfiles" || exit 1
 
-stow --adopt -t ~ i3 zsh nvim tmux wezterm bat bash picom vim portage
+stow --adopt -t ~ i3 zsh nvim tmux wezterm bat bash picom vim 
+
+sudo stow -v -t / portage
 
 target="/etc/keyd/default.conf"
 source="$HOME/me/personal/.dotfiles/default.conf"

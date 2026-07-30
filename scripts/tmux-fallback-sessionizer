@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# Create fallback main session after last session is destroyed
+tmux new-session -d -s main 2>/dev/null
