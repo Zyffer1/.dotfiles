@@ -7,6 +7,7 @@ local mason_commands = {
   "MasonLog",
   "MasonUpdate",
   "MasonUninstall",
+  "ZyfferLspInstall",
   "ZyfferToolsInstall",
 }
 
@@ -33,6 +34,19 @@ return {
         vim.cmd("MasonInstall " .. table.concat(packages, " "))
       end, {
         desc = "Install configured formatter and diagnostic tools with Mason",
+      })
+
+      vim.api.nvim_create_user_command("ZyfferLspInstall", function()
+        local packages = lsp.mason_ensure_installed()
+
+        if #packages == 0 then
+          vim.notify("Mason LSP installs are disabled for this environment", vim.log.levels.INFO)
+          return
+        end
+
+        vim.cmd("MasonInstall " .. table.concat(packages, " "))
+      end, {
+        desc = "Install configured LSP servers with Mason",
       })
     end,
   },

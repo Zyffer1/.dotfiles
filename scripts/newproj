@@ -1,0 +1,125 @@
+#!/usr/bin/env bash
+# newproj — create a new project under ~/me/<root>/<name> and open a tmux session,
+# or open a tmux session at any directory without creating anything.
+# Root picker lists every directory under ~/me plus two special options.
+# New/chosen roots that tmux-sessionizer does not yet search are added to its config (on confirmation).
+
+set -euo pipefail
+
+ME_ROOT="$HOME/me"
+CONFIG_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/tmux-sessionizer/tmux-sessionizer.conf"
+
+# Mirror tmux-sessionizer's search path logic (defaults + config overrides).
+if [[ -f "$CONFIG_FILE" ]]; then
+    source "$CONFIG_FILE"
+fi
+
+if [[ -z "${TS_SEARCH_PATHS:-}" ]]; then
+    TS_SEARCH_PATHS=(~/me/personal:1 ~/me/selfhost:1 ~/me/funBS/:1 ~/me/myfiles/:1)
+fi
+
+if [[ -n "${TS_EXTRA_SEARCH_PATHS+x}" ]]; then
+    TS_SEARCH_PATHS+=("${TS_EXTRA_SEARCH_PATHS[@]}")
+fi
+
+# Does tmux-sessionizer already search this root?
+root_is_searched() {
+    local root="$1"
+    local entry base bname
+    for entry in "${TS_SEARCH_PATHS[@]}"; do
+        base="${entry%%:*}"
+        base="${base%/}"
+        bname="$(basename "$base")"
+        if [[ "$bname" == "$root" ]]; then
+            return 0
+        fi
+    done
+    return 1
+}
+
+# Register a root with tmux-sessionizer via TS_EXTRA_SEARCH_PATHS in its config.
+add_root_to_search() {
+    local root="$1"
+    mkdir -p "$(dirname "$CONFIG_FILE")"
+    if [[ -f "$CONFIG_FILE" ]]; then
+        echo "TS_EXTRA_SEARCH_PATHS+=(~/me/$root:1)" >> "$CONFIG_FILE"
+    else
+        printf '# tmux-sessionizer config (managed by newproj)\nTS_EXTRA_SEARCH_PATHS+=(~/me/%s:1)\n' "$root" > "$CONFIG_FILE"
+    fi
+    echo "added ~/me/$root to tmux-sessionizer search paths"
+}
+
+# Create (or reuse) a session named $1 rooted at $2, then switch to it.
+open_session() {
+    local name="$1" dir="$2"
+    if [[ -n "${TMUX:-}" ]]; then
+        tmux new-session -ds "$name" -c "$dir" 2>/dev/null || true
+        tmux switch-client -t "$name"
+    else
+        echo "created session $name at $dir"
+        echo "run: tmux new -A -s $name -c $dir"
+    fi
+}
+
+# Existing roots under ~/me.
+mapfile -t roots < <(for d in "$ME_ROOT"/*/; do basename "$d"; done 2>/dev/null)
+mapfile -t roots < <(printf '%s\n' "${roots[@]}" | sort)
+
+options=("${roots[@]}")
+options+=("-- create new root --")
+options+=("-- new session from path --")
+
+choice="$(printf '%s\n' "${options[@]}" | fzf --prompt="Root> " --no-preview --height=40% --layout=reverse)" || true
+[[ -n "$choice" ]] || exit 0
+
+if [[ "$choice" == "-- new session from path --" ]]; then
+    printf 'Path (default ~)> '
+    read -r path || true
+    path="${path:-$HOME}"
+    path="${path/#\~/$HOME}"
+    [[ -d "$path" ]] || { echo "error: not a directory: $path"; exit 1; }
+
+    printf 'Session name> '
+    read -r session || true
+    session="${session//[ :]/_}"
+    [[ -n "$session" ]] || session="$(basename "$path" | tr . _)"
+    [[ -n "$session" ]] || session="main"
+
+    open_session "$session" "$path"
+    exit 0
+fi
+
+if [[ "$choice" == "-- create new root --" ]]; then
+    printf 'New root name> '
+    read -r root || true
+    root="$(basename "$root")"
+    [[ -n "$root" ]] || exit 0
+    mkdir -p "$ME_ROOT/$root"
+else
+    root="$choice"
+fi
+
+printf 'Project name> '
+read -r name || true
+name="$(basename "$name" | tr ' ' '_')"
+[[ -n "$name" ]] || exit 0
+
+proj_dir="$ME_ROOT/$root/$name"
+if [[ -e "$proj_dir" ]]; then
+    echo "error: $proj_dir already exists"
+    exit 1
+fi
+
+mkdir -p "$proj_dir"
+
+if ! root_is_searched "$root"; then
+    printf 'Add %s to tmux-sessionizer? [y/N] ' "$proj_dir"
+    read -r answer || true
+    case "$answer" in
+        [yY]*)
+            add_root_to_search "$root"
+            ;;
+    esac
+fi
+
+open_session "$(basename "$proj_dir" | tr . _)" "$proj_dir"

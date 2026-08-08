@@ -1,7 +1,20 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
 
-sudo cp /etc/portage/make.conf ~/me/personal/.dotfiles/gentoo/
+repo_root="$HOME/me/personal/.dotfiles"
 
-git add .
+cd "$repo_root"
+
+git add --all
+
+if git diff --cached --quiet; then
+  echo "No changes to commit."
+  exit 0
+fi
+
+git status --short
 git commit -m "hello"
-git push -u origin main && git push -u gitlab main
+
+for remote in github gitlab; do
+  git push -u "$remote" main
+done

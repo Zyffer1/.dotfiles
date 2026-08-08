@@ -8,6 +8,7 @@ vim.filetype.add({
   },
   extension = {
     bash = "sh",
+    luau = "luau",
     sh = "sh",
     zsh = "sh",
   },

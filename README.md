@@ -18,9 +18,9 @@ cd ~/me/personal/.dotfiles
 | Package | What it configures |
 |---|---|
 | `zsh` | Primary shell (aliases, vi-mode, autosuggestions, syntax highlighting) |
-| `nvim` | Neovim with lazy.nvim, 14 LSP servers, keyboard-only (no mouse) |
+| `nvim` | Neovim with lazy.nvim and 14 LSP servers |
 | `tmux` | Terminal multiplexer with TPM, vim-tmux-navigator, sessionizer |
-| `wezterm` | Terminal emulator (rose-pine-moon, WebGPU, 165 FPS) |
+| `wezterm` | Terminal emulator (rose-pine-moon) |
 | `i3` | Window manager (rofi, picom, i3status) |
 | `bat` | Cat clone with rose-pine-moon theme |
 | `opencode` | AI coding assistant config (MCP servers, agents) |
@@ -37,7 +37,7 @@ cd ~/me/personal/.dotfiles
 ## Git
 
 Two remotes — [GitHub](https://github.com/Zyffer1/.dotfiles) and [GitLab](https://gitlab.com/Zyffer1/dotfiles).
-Commit style: always `"hello"`. Force-push is normal (see `git.sh`).
+Commit style: always `"hello"`.
 
 ## For AI Agents
 

@@ -4,7 +4,7 @@ This is the **single source of truth** for this dotfiles repository. Any AI agen
 working here should read this file first. It merges the repository guide with full
 context about every package, script, and convention.
 
-> **Last updated:** 2026-06-27
+> **Last updated:** 2026-07-31
 > **Repo path:** `~/me/personal/.dotfiles/` (aliased as `~/me/.dotfiles/`)
 
 ---
@@ -38,12 +38,12 @@ context about every package, script, and convention.
 
 This is a personal dotfiles repository managed with **GNU Stow**. Every top-level
 directory (except `scripts/` and `.git/`) is a Stow package that gets symlinked
-into `$HOME`. The repo has **two git remotes**: GitHub (`origin`) and GitLab (`gitlab`).
+into `$HOME`. The repo has **two git remotes**: GitHub (`github`) and GitLab (`gitlab`).
 
 ### Philosophy
 
 - **Minimal** — only what's needed, nothing extraneous.
-- **Keyboard-driven** — no mouse in Neovim, vi-mode in shell.
+- **Keyboard-driven** — vi-mode in shell, keyboard-first editing.
 - **Rose-pine-moon theme** — every visual tool uses this dark purple theme.
 - **No AI/Copilot** in the editor — the AI is in OpenCode, not in Neovim.
 - **No SaaS dependencies** — everything is local or vendored.
@@ -56,12 +56,12 @@ into `$HOME`. The repo has **two git remotes**: GitHub (`origin`) and GitLab (`g
 | Editor | Neovim with lazy.nvim |
 | Terminal | WezTerm (Wayland-disabled) |
 | WM | i3 (X11 only) |
-| Compositor | Picom (GLX, dual_kawase blur) |
+| Compositor | Picom (xrender, dual_kawase blur) |
 | Tmux | with TPM plugins |
 | Bat theme | rose-pine-moon |
 | Keyd | CapsLock → Backspace, Backspace → Delete |
 | Stow packages | 10 (bash, bat, i3, nvim, opencode, picom, tmux, vim, wezterm, zsh) |
-| Scripts (unstowed) | 3 (tmux-sessionizer, selfhost, reshade-linux.sh) |
+| Scripts (unstowed) | 6 (tmux-sessionizer, newproj, selfhost, reshade-linux.sh, doctor, tmux-fallback-sessionizer) |
 | Git remotes | 2 (github, gitlab) |
 | Commit style | Always "hello" (single message for all changes) |
 
@@ -77,7 +77,7 @@ into `$HOME`. The repo has **two git remotes**: GitHub (`origin`) and GitLab (`g
   README.md         <- Human-friendly overview
   .gitignore        <- Git ignore rules
   stow.sh           <- Deploy all packages via Stow
-  git.sh            <- ⚠️ DANGEROUS: force-push to both remotes
+  git.sh            <- Copy portage config, commit, push to both remotes
   default.conf      <- Keyd config (symlinked to /etc/keyd/)
   install.log       <- Spicetify install log (tracked noise)
   bash/             <- Stow package
@@ -129,11 +129,9 @@ stow --no -t ~ <package>           # dry-run before deploying
 ### stow.sh Behavior
 
 The `stow.sh` script at repo root does:
-1. `stow -t ~ i3 zsh nvim tmux wezterm bat opencode bash picom vim`
-2. Symlinks `default.conf` to `/etc/keyd/default.conf` (with `sudo`, only if not already linked)
-
-It does **not** do root-level stow (`sudo stow -t /root/`).
-If you need root configs, you'd need to add that manually.
+1. `stow --restow -t ~ i3 zsh nvim tmux wezterm bat bash picom vim`
+2. `sudo stow --restow -t / portage`
+3. Symlinks `default.conf` to `/etc/keyd/default.conf` (with `sudo`, only if not already linked)
 
 ### Dry-Run All Packages
 
@@ -189,7 +187,7 @@ nvim/.config/nvim/
 
 #### Key Principles
 
-- **Keyboard only:** `vim.opt.mouse = ""` — no mouse at all
+- Mouse is enabled in Neovim
 - **No AI/Copilot** in the editor
 - **No SaaS** integrations
 - **No fancy UI plugins:** no noice.nvim, no notify.nvim, no which-key.nvim, no flash.nvim
@@ -228,7 +226,7 @@ selene, shfmt, statix, stylua, taplo, yamlfmt, yamllint
 | `surround.lua` | kylechui/nvim-surround | Surround editing |
 | `tabout.lua` | abecodes/tabout.nvim | Tab out of brackets |
 | `telescope.lua` | nvim-telescope/telescope.nvim | Fuzzy finder |
-| `treesitter.lua` | nvim-treesitter/nvim-treesitter | Syntax parsing |
+| `treesitter.lua` | nvim-treesitter/nvim-treesitter (`main` branch) + textobjects | Syntax parsing, built-in highlighting, text objects |
 | `trouble.lua` | folke/trouble.nvim | Diagnostics list |
 | `undotree.lua` | mbbill/undotree | Undo history visualizer |
 | `vim-tmux-nav.lua` | christoomey/vim-tmux-navigator | Seamless pane navigation |
@@ -257,40 +255,39 @@ you would need to manually start Neovim and run `:checkhealth`.
 
 ### 4.2 zsh/ — Zsh Shell
 
-**Primary shell. Sources everything from `exstraconf/` directory.**
+**Primary shell. Sources `~/.config/zsh/*.zsh`.**
 
 #### Entrypoint
 
 ```zsh
 # ~/.zshrc
-for file in ~/.config/zsh/exstraconf/*.zsh; do
+for file in ~/.config/zsh/*.zsh; do
   [ -f "$file" ] && source "$file"
 done
 ```
 
-#### Module Files (8 files in `exstraconf/`)
+#### Module Files (`~/.config/zsh/`)
 
 | File | Purpose |
 |---|---|
-| `aliases.zsh` | `ls -lah --color=auto`, `grep --color=auto`, `fzf` with bat preview, `nvim`, `nixvi` |
+| `aliases.zsh` | Aliases, helper functions, safety wrappers |
+| `bindkey.zsh` | Key bindings |
 | `expots.zsh` | `EDITOR=nvim`, `MANPAGER='nvim +Man!'`, `PATH` additions |
 | `eyecandy.zsh` | Prompt with git info |
 | `git.zsh` | `git_prompt_info()` function |
-| `hist.zsh` | History settings (size, file location, dedup) |
-| `menulist.zsh` | Tab completion settings |
-| `sourceingplugins.zsh` | Loads zsh-autosuggestions, zsh-syntax-highlighting, zoxide, fzf |
+| `hist.zsh` | History settings |
+| `init.zsh` | Plugin/completion initialization |
+| `menulist.zsh` | Completion UI settings |
 | `vi(mode).zsh` | Vi-mode with cursor shape changes |
 
-#### Plugins (vendored in `~/.config/zsh/plugins/`)
+#### Plugins
 
-- `git.plugin.zsh` — vendored from oh-my-zsh (14KB)
-- `zsh-autosuggestions/` — full vendored plugin directory
-- `zsh-syntax-highlighting/` — full vendored plugin directory with highlighters
+Plugins are sourced from system-installed zsh site-functions in `init.zsh`.
 
 #### Secrets
 
 `secret.zsh` is **gitignored** (listed in `.gitignore`). If it exists, it's
-sourced automatically by the `exstraconf/*.zsh` loop. Place API keys, tokens,
+sourced automatically by the `~/.config/zsh/*.zsh` loop. Place API keys, tokens,
 or personal secrets there.
 
 ---
@@ -318,6 +315,7 @@ or personal secrets there.
 |---|---|
 | `M-r` | Reload tmux config |
 | `M-f` | Open tmux-sessionizer (fzf session picker) |
+| `prefix + n` | Open newproj (create a project, then jump to its session) |
 | `M-1` through `M-0` | Select windows 1-10 |
 | `M-h/j/k/l` | Navigate panes (matches Neovim) |
 
@@ -347,9 +345,9 @@ or personal secrets there.
 | Font | JetBrains Mono, size 22 |
 | Window size | 120 × 28 characters |
 | Tab bar | Disabled |
-| Opacity | 0.0 (fully transparent over picom blur) |
+| Opacity | 1.0 |
 | Frame rate | 165 FPS |
-| Front end | WebGPU |
+| Front end | Software |
 | Wayland | Disabled (uses X11) |
 | Theme | rose-pine-moon (fetched via plugin) |
 | Font reset | `Ctrl+Shift+R` |
@@ -435,7 +433,7 @@ Bundled `.tmTheme` files in `bat/.config/bat/themes/`:
 
 | Setting | Value |
 |---|---|
-| Backend | glx |
+| Backend | xrender |
 | Vsync | true |
 | Blur method | dual_kawase |
 | Blur strength | 6 |
@@ -547,7 +545,7 @@ source ~/.vim.Zyffer/keybinds.vim  " EMPTY FILE (1 byte)
 
 ## 5. Scripts Reference
 
-Three executable scripts live in `scripts/` (not stowed, added to `PATH` via zsh).
+Six executable scripts live in `scripts/` (not stowed, added to `PATH` via zsh).
 
 ### tmux-sessionizer
 
@@ -557,11 +555,30 @@ to tmux sessions.
 ```bash
 # Default search paths (hardcoded in script):
 #  - ~/me/personal
-#  - ~/me/.dotfiles
 #  - ~/me/selfhost
+#  - ~/me/funBS/
+#  - ~/me/myfiles/
 
 # Configurable via tmux-sessionizer.conf
 # Triggered in tmux via M-f keybinding
+```
+
+### newproj
+
+Creates a new project under `~/me/<root>/<name>` and opens a tmux session there.
+
+```bash
+# Fzf picks the root (any dir under ~/me, "-- create new root --", or
+# "-- new session from path --"), then prompts for the project name.
+#
+# "-- new session from path --": no project is created. Prompts for a directory
+# (default ~, accepts /tmp, ~/.config, ...) and a session name (empty -> dir basename),
+# then creates/switches to a session rooted there.
+#
+# Jumps to a new session (no git init). If the chosen root isn't searched yet
+# (e.g. a brand-new root like ~/me/randBS, or existing ~/me/src / ~/me/vms), it
+# asks before appending the root to ~/.config/tmux-sessionizer/tmux-sessionizer.conf
+# via TS_EXTRA_SEARCH_PATHS. Triggered in tmux via prefix + n
 ```
 
 ### selfhost
@@ -577,6 +594,10 @@ selfhost <service> start|stop|restart|status|logs|update|doctor
 
 Installs ReShade (post-processing injector) on Linux.
 ~30KB, executable.
+
+### doctor
+
+Checks whether expected dotfiles dependencies are installed.
 
 ---
 
@@ -610,7 +631,6 @@ Every visual application uses **rose-pine-moon** (dark purple theme):
 
 ### Design Decisions
 
-- **No mouse in editor** — Neovim has `mouse=""`
 - **No AI in editor** — AI is in OpenCode, separate from editing
 - **No SaaS** — everything self-hosted or local
 - **No fancy bullshit** — no decorative UI, no animations, no eye candy. Everything must have a purpose.
@@ -625,13 +645,11 @@ Every visual application uses **rose-pine-moon** (dark purple theme):
 
 ```bash
 ./git.sh
-# Does: git add . → git commit -m "hello" → git push -f to BOTH remotes
-# Also backs up entire repo to ~/bk/
+# Does: copy /etc/portage/make.conf into portage/, git add ., commit "hello",
+# then push to github and gitlab
 ```
 
-⚠️ This force-pushes everything, including accidental commits.
 Always check `git status` and `git diff` before running.
-There is **no undo** for a force-push.
 
 ### stow --no vs reality
 

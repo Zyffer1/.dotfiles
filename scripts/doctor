@@ -1,7 +1,10 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # scripts/doctor — Check that all expected tools are installed
 
+repo_root="$HOME/me/personal/.dotfiles"
 missing=()
+bad_links=()
+
 check() {
   if ! command -v "$1" &>/dev/null; then
     missing+=("$1")
@@ -9,6 +12,26 @@ check() {
   else
     echo "  ✅ $1"
   fi
+}
+
+check_symlink() {
+  local target="$1"
+  local expected="$2"
+  local label="$3"
+
+  if [[ ! -L "$target" ]]; then
+    bad_links+=("$label")
+    echo "  ❌ $label"
+    return
+  fi
+
+  if [[ "$(readlink -f "$target")" != "$expected" ]]; then
+    bad_links+=("$label")
+    echo "  ❌ $label"
+    return
+  fi
+
+  echo "  ✅ $label"
 }
 
 echo "=== Dotfiles Doctor ==="
@@ -19,13 +42,20 @@ check zsh
 check bash
 check git
 check stow
+check trash
+
+echo ""
+echo "Gentoo:"
+check emerge
+check eselect
+check dispatch-conf
+check emaint
 
 echo ""
 echo "Terminal & editor:"
 check nvim
 check wezterm
 check tmux
-check ghostty
 
 echo ""
 echo "CLI tools:"
@@ -47,11 +77,27 @@ check rofi
 check i3lock
 check pactl
 check feh
+check keyd
+check xss-lock
+
+echo ""
+echo "Stow links:"
+check_symlink "$HOME/.zshrc" "$repo_root/zsh/.zshrc" ".zshrc"
+check_symlink "$HOME/.bashrc" "$repo_root/bash/.bashrc" ".bashrc"
+check_symlink "$HOME/.vimrc" "$repo_root/vim/.vimrc" ".vimrc"
+check_symlink "$HOME/.config/nvim/init.lua" "$repo_root/nvim/.config/nvim/init.lua" "nvim"
+check_symlink "$HOME/.config/tmux/tmux.conf" "$repo_root/tmux/.config/tmux/tmux.conf" "tmux"
+check_symlink "$HOME/.config/wezterm/wezterm.lua" "$repo_root/wezterm/.config/wezterm/wezterm.lua" "wezterm"
+check_symlink "$HOME/.config/i3/config" "$repo_root/i3/.config/i3/config" "i3"
+check_symlink "$HOME/.config/bat/config" "$repo_root/bat/.config/bat/config" "bat"
+check_symlink "$HOME/.config/picom/picom.conf" "$repo_root/picom/.config/picom/picom.conf" "picom"
+check_symlink "$HOME/.config/opencode/opencode.jsonc" "$repo_root/opencode/.config/opencode/opencode.jsonc" "opencode"
 
 echo ""
 echo "---"
-if [ ${#missing[@]} -eq 0 ]; then
+if [ ${#missing[@]} -eq 0 ] && [ ${#bad_links[@]} -eq 0 ]; then
   echo "✅ Everything looks good!"
 else
-  echo "❌ Missing (${#missing[@]}): ${missing[*]}"
+  [ ${#missing[@]} -gt 0 ] && echo "❌ Missing (${#missing[@]}): ${missing[*]}"
+  [ ${#bad_links[@]} -gt 0 ] && echo "❌ Broken links (${#bad_links[@]}): ${bad_links[*]}"
 fi

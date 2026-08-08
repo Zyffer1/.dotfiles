@@ -2,6 +2,7 @@ local terminal_group = vim.api.nvim_create_augroup("ZyfferTerminal", { clear = t
 local man_group = vim.api.nvim_create_augroup("ZyfferMan", { clear = true })
 local oil_group = vim.api.nvim_create_augroup("ZyfferOil", { clear = true })
 local spell_group = vim.api.nvim_create_augroup("ZyfferSpell", { clear = true })
+local yank_group = vim.api.nvim_create_augroup("ZyfferYankHighlight", { clear = true })
 
 local spell_filetypes = {
   gitcommit = true,
@@ -70,5 +71,13 @@ vim.api.nvim_create_autocmd("FileType", {
     if spell then
       vim.opt_local.spelllang = { "en", "nb" }
     end
+  end,
+})
+
+-- Brief flash on the yanked text so you can see what was yanked
+vim.api.nvim_create_autocmd("TextYankPost", {
+  group = yank_group,
+  callback = function()
+    pcall(vim.hl.on_yank, { timeout = 200 })
   end,
 })

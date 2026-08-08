@@ -8,8 +8,8 @@ M.servers = {
   "html",
   "jsonls",
   "lua_ls",
+  "luau_lsp",
   "marksman",
-  "nixd",
   "pyright",
   "rust_analyzer",
   "taplo",
@@ -29,6 +29,7 @@ M.mason_tools = {
   "prettierd",
   "ruff",
   "selene",
+  "shellcheck",
   "shfmt",
   "statix",
   "stylua",
@@ -45,8 +46,8 @@ M.server_commands = {
   html = "vscode-html-language-server",
   jsonls = "vscode-json-language-server",
   lua_ls = "lua-language-server",
+  luau_lsp = "luau-lsp",
   marksman = "marksman",
-  nixd = "nixd",
   pyright = "pyright-langserver",
   rust_analyzer = "rust-analyzer",
   taplo = "taplo",
@@ -55,15 +56,15 @@ M.server_commands = {
 }
 
 M.server_filetypes = {
-  bashls = { "sh", "bash" },
+  bashls = { "sh", "bash", "zsh" },
   clangd = { "c", "cpp", "objc", "objcpp", "cuda", "proto" },
   cssls = { "css", "scss", "less" },
   gopls = { "go", "gomod", "gowork", "gotmpl" },
   html = { "html" },
   jsonls = { "json", "jsonc" },
   lua_ls = { "lua" },
+  luau_lsp = { "luau" },
   marksman = { "markdown", "markdown.mdx" },
-  nixd = { "nix" },
   pyright = { "python" },
   rust_analyzer = { "rust" },
   taplo = { "toml" },
@@ -143,6 +144,8 @@ local ts_inlay_hints = {
   includeInlayVariableTypeHints = false,
 }
 
+local data_dir = vim.fn.stdpath("data")
+
 local server_configs = {
   bashls = {
     filetypes = M.server_filetypes.bashls,
@@ -157,6 +160,9 @@ local server_configs = {
     },
   },
   cssls = {
+    init_options = {
+      provideFormatter = false,
+    },
     settings = {
       css = { validate = true },
       less = { validate = true },
@@ -206,8 +212,7 @@ local server_configs = {
       Lua = {
         completion = {
           callSnippet = "Replace",
-        },
-        diagnostics = {
+        },        diagnostics = {
           globals = { "vim" },
         },
         hint = {
@@ -227,15 +232,25 @@ local server_configs = {
       },
     },
   },
-  nixd = {
-    handlers = {
-      ["workspace/configuration"] = function(_, _, ctx)
-        local client = vim.lsp.get_client_by_id(ctx.client_id)
-        return client and client.config.settings.nixd or {}
-      end,
+  luau_lsp = {
+    cmd = {
+      "luau-lsp",
+      "lsp",
+      "--definitions:@roblox=" .. data_dir .. "/luau-lsp/globalTypes.PluginSecurity.d.luau",
+      "--documentation=" .. data_dir .. "/luau-lsp/en-us.json",
     },
     settings = {
-      nixd = {},
+      ["luau-lsp"] = {
+        platform = {
+          type = "roblox",
+        },
+        types = {
+          roblox = true,
+        },
+        sourcemap = {
+          enabled = true,
+        },
+      },
     },
   },
   pyright = {
@@ -255,6 +270,9 @@ local server_configs = {
     settings = {
       ["rust-analyzer"] = {
         cargo = {
+          buildScripts = {
+            enable = true,
+          },
           allFeatures = true,
         },
         check = {
@@ -262,6 +280,11 @@ local server_configs = {
         },
         completion = {
           postfix = {
+            enable = true,
+          },
+        },
+        hover = {
+          actions = {
             enable = true,
           },
         },
@@ -293,6 +316,9 @@ local server_configs = {
     settings = {
       yaml = {
         completion = true,
+        format = {
+          enable = false,
+        },
         hover = true,
         schemaStore = {
           enable = true,
@@ -320,7 +346,20 @@ function M.setup()
       border = "rounded",
       source = true,
     },
+    jump = {
+      float = true,
+    },
     severity_sort = true,
+    signs = {
+      text = {
+        [vim.diagnostic.severity.ERROR] = "E",
+        [vim.diagnostic.severity.WARN] = "W",
+        [vim.diagnostic.severity.INFO] = "I",
+        [vim.diagnostic.severity.HINT] = "H",
+      },
+    },
+    underline = true,
+    update_in_insert = false,
     virtual_text = {
       source = "if_many",
       spacing = 2,

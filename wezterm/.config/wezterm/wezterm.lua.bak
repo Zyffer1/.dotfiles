@@ -7,8 +7,6 @@ config.font_size = 22
 
 config.enable_tab_bar = false
 
-config.default_prog = { "tmux", "new-session", "-A", "-s", "main" }
-
 config.window_padding = {
   left = 0,
   right = 0,

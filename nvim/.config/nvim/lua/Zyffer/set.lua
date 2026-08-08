@@ -52,7 +52,7 @@ vim.opt.listchars = { trail = "·", tab = "> " }
 -- Remove ~ characters on empty lines
 vim.opt.fillchars:append({ eob = " " })
 
-local ok, ui2 = pcall(require, "vim._core.ui2")
-if ok then
-  ui2.enable({})
+-- Smooth scrolling for C-d/C-u (Neovim 0.11+)
+if vim.fn.has("nvim-0.11") == 1 then
+  vim.opt.smoothscroll = true
 end
