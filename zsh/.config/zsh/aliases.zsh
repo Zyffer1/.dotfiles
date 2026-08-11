@@ -12,18 +12,6 @@ eupdate() {
   command sudo emerge --ask --verbose --update --deep --newuse @world "$@"
 }
 
-epretend() {
-  command sudo emerge --ask --verbose --update --deep --newuse --pretend @world "$@"
-}
-
-enews() {
-  command sudo eselect news read all
-}
-
-esync() {
-  command sudo emaint sync -a
-}
-
 # better shell utile
 alias ls='eza -la --icons --git'
 alias tree='eza -a --icons --git --tree'
